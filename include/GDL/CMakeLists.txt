@@ -1,4 +1,6 @@
-set(FILES "${CMAKE_CURRENT_SOURCE_DIR}/Component.hpp")
+file(GLOB FILES
+		"${CMAKE_CURRENT_SOURCE_DIR}/*"
+    )
 set(SUBDIRECTORIES "")
 set(RELATIVE_PATH "include/GDL")
 

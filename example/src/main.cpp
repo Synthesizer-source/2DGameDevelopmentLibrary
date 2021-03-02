@@ -1,14 +1,8 @@
 #include <iostream>
-#include <GDL/Component.hpp>
 #include <SFML/Graphics.hpp>
+
 int main(int argc, char** argv){
-    Component* c = new Component();
-    c->print();
-    c->v.x = 19;
-    c->v.y = 97;
-
-    std::cout << c->v.x<< " "<< c->v.y << std::endl;
-
+    
     sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
     sf::CircleShape shape(100.f);
     shape.setFillColor(sf::Color::Green);
