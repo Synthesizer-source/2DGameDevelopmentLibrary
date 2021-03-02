@@ -1,12 +1,18 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 
+#include <GDL/Entity.hpp>
+#include <CustomComponent.hpp>
+
 int main(int argc, char** argv){
     
     sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
 
+    gdl::Entity* e = new gdl::Entity();
+
+    e->addComponent<CustomComponent>();
+    e->init();
+    
     while (window.isOpen())
     {
         sf::Event event;
@@ -16,8 +22,10 @@ int main(int argc, char** argv){
                 window.close();
         }
 
+        e->update(60);
+
         window.clear();
-        window.draw(shape);
+        window.draw(*e);
         window.display();
     }
     return 0;
