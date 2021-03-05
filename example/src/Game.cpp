@@ -1,24 +1,30 @@
 #include <Game.hpp>
-#include <GDL/Entity.hpp>
 #include <CustomComponent.hpp>
+#include <GDL/Entity.hpp>
+#include <GDL/SpriteRenderer.hpp>
 
 sf::RenderWindow* Game::window = nullptr;
 gdl::Entity* e;
+
 
 void Game::init() {
 
     window = new sf::RenderWindow(sf::VideoMode(1024, 768), "My window");
 
     e = new gdl::Entity();
-
     e->addComponent<CustomComponent>();
+    e->getComponent<CustomComponent>()->setActive(false);
+    e->addComponent<gdl::SpriteRenderer>();
+
     e->init();
+    
+    e->getComponent<gdl::SpriteRenderer>()->loadTexture("/example/resources/spaceship.png");
+    
 }
 
 void Game::update(float timestep) {
 
     e->update(timestep);
-
 }
 
 void Game::render() {
