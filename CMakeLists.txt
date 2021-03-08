@@ -34,11 +34,13 @@ if(NOT BUILD_SHARED_LIBS)
 	COMPILE_FLAGS -DFOO_STATIC_DEFINE)
 endif()
 
+# set_target_properties(${PROJECT_NAME} PROPERTIES SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 include("GenerateExportHeader")
 generate_export_header("${PROJECT_NAME}")
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/gdl_export.h" DESTINATION "include")
-
-
+# add_definitions( -DGDL_DIR="${GDL_SOURCE_DIR}")
+ADD_DEFINITIONS( -DGDL_DIR=\"${GDL_SOURCE_DIR}\" )
+# target_compile_definitions("GDL" PUBLIC FOO=1)
 add_subdirectory("example")
 add_subdirectory("include")
 add_subdirectory("src")

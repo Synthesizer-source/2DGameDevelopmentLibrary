@@ -7,8 +7,10 @@ namespace gdl {
     class Component : public sf::Drawable {
     private:
         Entity* entity;
+        bool active = true;
     public:
-
+        void setActive(bool active);
+        bool isActive() const;
         void setOwner(Entity* entity);
         Entity* getOwner() const;
         virtual void init();

@@ -14,3 +14,8 @@ if(FILES)
 	#Install our source files
 	install(FILES ${FILES} DESTINATION ${RELATIVE_PATH})
 endif()
+
+# get_target_property(GDL_SOURCE_DIR GDL SOURCE_DIR)
+
+
+# message(${GDL_SOURCE_DIR})
