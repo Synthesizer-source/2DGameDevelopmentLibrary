@@ -7,17 +7,39 @@ const float PI = 3.14159265;
 void PlayerMovement::init() {}
 
 void PlayerMovement::update(const float timestep) {
+
+
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-        this->moveLeft();
-
+    {
+        velocity.x -= (acceleration*timestep);
+    }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-        this->moveRight();
-
+    {
+        velocity.x += (acceleration*timestep);
+    }
+   
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-        this->moveUp();
-
+    {
+        velocity.y -= (acceleration*timestep);
+    }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-        this->moveDown();
+    {
+        velocity.y += (acceleration*timestep);
+    }
+    
+
+    if (velocity.y > maxSpeed) velocity.y = maxSpeed;
+    if (velocity.y < -maxSpeed) velocity.y = -maxSpeed;
+    if (velocity.x < -maxSpeed) velocity.x = -maxSpeed;
+    if (velocity.x > maxSpeed) velocity.x = maxSpeed;
+
+    this->getOwner()->setPosition(this->getOwner()->getPosition() + velocity);
+    float actualspeed = sqrt((velocity.x * velocity.x) + (velocity.y * velocity.y));
+
+    if (actualspeed > maxSpeed)
+    {
+        velocity *= maxSpeed / actualspeed;
+    }
 
     this->rotate();
 }
@@ -26,39 +48,17 @@ void PlayerMovement::draw(sf::RenderTarget& target, sf::RenderStates states) con
 
 }
 
-void PlayerMovement::moveUp()
-{   
-
-    this->getOwner()->setPosition(this->getOwner()->getPosition().x,
-                      this->getOwner()->getPosition().y - this->speed);
-}
-void PlayerMovement::moveDown()
-{
-    this->getOwner()->setPosition(this->getOwner()->getPosition().x,
-                      this->getOwner()->getPosition().y + this->speed);
-}
-void PlayerMovement::moveLeft()
-{
-    this->getOwner()->setPosition(sf::Vector2f(this->getOwner()->getPosition().x - this->speed,
-                                   this->getOwner()->getPosition().y));
-}
-void PlayerMovement::moveRight()
-{
-    this->getOwner()->setPosition(sf::Vector2f(this->getOwner()->getPosition().x + this->speed,
-                                   this->getOwner()->getPosition().y));
-}
-
-void PlayerMovement::rotate(){
-    this->getOwner()->setRotation(90 + atan2(sf::Mouse::getPosition(*Game::window).y - 
+void PlayerMovement::rotate() {
+    this->getOwner()->setRotation(90 + atan2(sf::Mouse::getPosition(*Game::window).y -
         (this->getOwner()->getPosition().y),
-        sf::Mouse::getPosition(*Game::window).x - 
+        sf::Mouse::getPosition(*Game::window).x -
         (this->getOwner()->getPosition().x)) * 180 / PI);
 }
 
-void PlayerMovement::setSpeed(float speed) {
-    this->speed = speed;
+void PlayerMovement::setMaxSpeed(float speed) {
+    this->maxSpeed = speed;
 }
 
-float PlayerMovement::getSpeed() const {
-    return this->speed;
+float PlayerMovement::getMaxSpeed() const {
+    return this->maxSpeed;
 }

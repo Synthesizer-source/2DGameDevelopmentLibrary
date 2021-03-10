@@ -5,16 +5,15 @@
 class PlayerMovement : public gdl::Component
 {
 private:
-    float speed = 20;
-    void moveUp();
-    void moveDown();
-    void moveLeft();
-    void moveRight();
+    float currentSpeed = 0.0f;
+    float maxSpeed = 10;
+    float acceleration = 5.0f;
+    sf::Vector2f velocity;
     void rotate();
 
 public:
-    void setSpeed(float speed);
-    float getSpeed() const;
+    void setMaxSpeed(float speed);
+    float getMaxSpeed() const;
     virtual void init() override;
     virtual void update(const float timestep);
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
