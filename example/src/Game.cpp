@@ -2,6 +2,7 @@
 #include <CustomComponent.hpp>
 #include <GDL/Entity.hpp>
 #include <GDL/SpriteRenderer.hpp>
+#include <PlayerMovement.hpp>
 
 sf::RenderWindow* Game::window = nullptr;
 gdl::Entity* e;
@@ -15,11 +16,12 @@ void Game::init() {
     e->addComponent<CustomComponent>();
     e->getComponent<CustomComponent>()->setActive(false);
     e->addComponent<gdl::SpriteRenderer>();
-
+    e->addComponent<PlayerMovement>();
     e->init();
-    
-    e->getComponent<gdl::SpriteRenderer>()->loadTexture("/example/resources/spaceship.png");
-    
+    /* SpriteRenderer.cpp -> GDL -> src -> example -> resources -> spaceship.png */
+    e->getComponent<gdl::SpriteRenderer>()->loadTexture("../../example/resources/spaceship.png");
+    e->setOrigin(e->getComponent<gdl::SpriteRenderer>()->getCenter());
+    e->setPosition({100, 100});
 }
 
 void Game::update(float timestep) {

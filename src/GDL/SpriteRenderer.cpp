@@ -22,17 +22,17 @@ namespace gdl {
     void SpriteRenderer::update(const float timestep) {}
 
     /**
-     * @brief load texture with path of texture
+     * @brief load texture with path of texture. You use absolute resource path is better.
      * 
      * @param pathTexture 
      */
     void SpriteRenderer::loadTexture(const char* pathTexture) {
         
         // Ex : ../resources/spaceship.png
-
+        // GDL_FOLDER_PATH + std::string(pathTexture)
         try
         {
-            if (!this->texture.loadFromFile(GDL_FOLDER_PATH + std::string(pathTexture)))
+            if (!this->texture.loadFromFile(pathTexture))
             {
                 throw "Not loading texture.";
             }
