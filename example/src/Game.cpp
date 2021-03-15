@@ -5,34 +5,41 @@
 #include <PlayerMovement.hpp>
 
 sf::RenderWindow* Game::window = nullptr;
-gdl::Entity* e;
-
+gdl::Entity* player;
+gdl::Entity* enemy;
 
 void Game::init() {
 
     window = new sf::RenderWindow(sf::VideoMode(1024, 768), "My window");
 
-    e = new gdl::Entity();
-    e->addComponent<CustomComponent>();
-    e->getComponent<CustomComponent>()->setActive(false);
-    e->addComponent<gdl::SpriteRenderer>();
-    e->addComponent<PlayerMovement>();
-    e->init();
+    player = new gdl::Entity();
+    player->addComponent<gdl::SpriteRenderer>();
+    player->addComponent<PlayerMovement>();
+    player->init();
     /* SpriteRenderer.cpp -> GDL -> src -> example -> resources -> spaceship.png */
-    e->getComponent<gdl::SpriteRenderer>()->loadTexture("../../example/resources/spaceship.png");
-    e->setOrigin(e->getComponent<gdl::SpriteRenderer>()->getCenter());
-    e->setPosition({100, 100});
+    player->getComponent<gdl::SpriteRenderer>()->loadTexture("../../example/resources/spaceship.png");
+    player->setOrigin(player->getComponent<gdl::SpriteRenderer>()->getCenter());
+    player->setPosition({100, 100});
+    
+    enemy = new gdl::Entity();
+    enemy->addComponent<gdl::SpriteRenderer>();
+    enemy->init();
+
+    enemy->getComponent<gdl::SpriteRenderer>()->loadTexture("../../example/resources/enemy.png");
+    enemy->setOrigin(enemy->getComponent<gdl::SpriteRenderer>()->getCenter());
+    enemy->setPosition({400, 400});
 }
 
 void Game::update(float timestep) {
-
-    e->update(timestep);
+    player->update(timestep);
+    enemy->update(timestep);
 }
 
 void Game::render() {
 
     window->clear();
-    window->draw(*e);
+    window->draw(*player);
+    window->draw(*enemy);
     window->display();
 
 }
