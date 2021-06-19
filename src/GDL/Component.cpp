@@ -2,7 +2,6 @@
 #include <GDL/Entity.hpp>
 
 namespace gdl {
-    
     /**
      * @brief set component active
      * 
@@ -45,5 +44,4 @@ namespace gdl {
     Entity* Component::getOwner() const {
         return this->entity;
     }
-
 }

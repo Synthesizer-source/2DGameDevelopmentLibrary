@@ -5,7 +5,6 @@
 #include <typeindex>
 #include <vector>
 #include <iostream>
-
 #include <GDL/Component.hpp>
 
 namespace gdl {
@@ -117,5 +116,4 @@ namespace gdl {
 
     };
 }
-
 #endif // ENTITY_HPP

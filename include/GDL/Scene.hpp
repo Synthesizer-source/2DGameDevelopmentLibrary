@@ -4,7 +4,6 @@
 #include <map>
 #include <string>
 namespace gdl {
-
     class Entity;
     class Scene : public sf::Drawable {
     private:
@@ -18,5 +17,4 @@ namespace gdl {
         void update(const float timestep);
     };
 }
-
 #endif // !SCENE_HPP

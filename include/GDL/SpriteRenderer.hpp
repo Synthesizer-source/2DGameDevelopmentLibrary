@@ -9,7 +9,6 @@ namespace gdl {
         sf::Texture texture;
         sf::Sprite sprite;
     public:
-
         void loadTexture(const char* pathTexture);
         sf::Vector2f getCenter() const;
         sf::Vector2f getSize() const;
@@ -21,5 +20,4 @@ namespace gdl {
         }
     };
 }
-
 #endif // !SPRITE_RENDERER_HPP

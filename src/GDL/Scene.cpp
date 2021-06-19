@@ -60,7 +60,4 @@ namespace gdl {
             }
         }
     }
-
-
-
 }

@@ -2,8 +2,6 @@
 #include <GDL/Entity.hpp>
 #include <string>
 
-
-
 namespace gdl {
 
 /**

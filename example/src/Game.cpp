@@ -1,8 +1,6 @@
 #include <Game.hpp>
 #include <GDL/GDL.hpp>
 #include <CustomComponent.hpp>
-// #include <GDL/Entity.hpp>
-// #include <GDL/SpriteRenderer.hpp>
 #include <PlayerMovement.hpp>
 
 sf::RenderWindow* Game::window = nullptr;

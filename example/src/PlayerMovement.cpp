@@ -8,7 +8,6 @@ void PlayerMovement::init() {}
 
 void PlayerMovement::update(const float timestep) {
 
-
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
     {
         velocity.x -= (acceleration*timestep);
@@ -26,7 +25,6 @@ void PlayerMovement::update(const float timestep) {
     {
         velocity.y += (acceleration*timestep);
     }
-    
 
     if (velocity.y > maxSpeed) velocity.y = maxSpeed;
     if (velocity.y < -maxSpeed) velocity.y = -maxSpeed;

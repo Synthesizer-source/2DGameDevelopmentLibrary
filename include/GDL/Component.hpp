@@ -20,7 +20,4 @@ namespace gdl {
         virtual ~Component() = default;
     };
 }
-
-
-
 #endif // COMPONENT_HPP
