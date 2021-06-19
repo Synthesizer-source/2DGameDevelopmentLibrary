@@ -21,10 +21,6 @@ namespace gdl {
         return this->active;
     }
 
-    /**
-     * @brief init
-     *
-     */
     void Component::init() {}
 
     /**

@@ -7,6 +7,8 @@ sf::RenderWindow* Game::window = nullptr;
 gdl::Scene* scene;
 gdl::Entity* player;
 gdl::Entity* enemy;
+gdl::Entity* circle;
+gdl::Entity* rectangle;
 
 void Game::init() {
 
@@ -15,10 +17,14 @@ void Game::init() {
     scene = new gdl::Scene("mainScene");
     player = scene->createNewObject("player");
     enemy = scene->createNewObject("enemy");
+    circle = scene->createNewObject("circle");
+    rectangle = scene->createNewObject("rectangle");
 
     player->addComponent<gdl::SpriteRenderer>();
     player->addComponent<PlayerMovement>();
     enemy->addComponent<gdl::SpriteRenderer>();
+    circle->addComponent<gdl::CircleShapeRenderer>();
+    rectangle->addComponent<gdl::RectangleShapeRenderer>();
 
     scene->init();
 
@@ -31,6 +37,13 @@ void Game::init() {
     enemy->setOrigin(enemy->getComponent<gdl::SpriteRenderer>()->getCenter());
     enemy->setPosition({ 400, 400 });
 
+    circle->getComponent<gdl::CircleShapeRenderer>()->setRadius(20.0f);
+    circle->getComponent<gdl::CircleShapeRenderer>()->setColor(sf::Color::Cyan);
+    circle->setPosition({ 120,120 });
+
+    rectangle->getComponent<gdl::RectangleShapeRenderer>()->setSize({ 100,100 });
+    rectangle->getComponent<gdl::RectangleShapeRenderer>()->setColor(sf::Color::Yellow);
+    rectangle->setPosition({ 240,420 });
 }
 
 void Game::update(float timestep) {
