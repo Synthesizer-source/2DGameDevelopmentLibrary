@@ -9,13 +9,18 @@
 #include <GDL/Component.hpp>
 
 namespace gdl {
-
+    class Scene;
     class Entity : public sf::Drawable, public sf::Transformable {
     private:
         bool active = true;
+        Scene* scene = nullptr;
     protected:
         std::map<std::type_index, Component*> components;
     public:
+
+        void setScene(Scene* scene);
+        Scene* getScene() const;
+
 
         /**
          * @brief add Components to entity
