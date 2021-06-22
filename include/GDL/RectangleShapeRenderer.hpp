@@ -7,7 +7,6 @@ namespace gdl {
     class RectangleShapeRenderer : public ShapeRenderer {
     public:
         void setSize(const sf::Vector2f& size);
-        const sf::Vector2f& getSize() const;
         void init() override;
         virtual RectangleShapeRenderer* clone() const{
             return new RectangleShapeRenderer(*this);

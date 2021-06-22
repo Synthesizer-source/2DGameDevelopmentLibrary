@@ -12,5 +12,4 @@ public:
     static sf::RenderWindow* window;
     static void run();
 };
-
 #endif // !GAME_HPP
