@@ -43,6 +43,9 @@ void Game::init() {
     rectangle->getComponent<gdl::RectangleShapeRenderer>()->setSize({ 100,100 });
     rectangle->getComponent<gdl::RectangleShapeRenderer>()->setColor(sf::Color::Yellow);
     rectangle->setPosition({ 240,420 });
+    std::cout << gdl::utils::toString(rectangle->getComponent<gdl::RectangleShapeRenderer>()->getCenter()) << "\n";
+    sf::FloatRect f(10, 10, 10, 10);
+    std::cout << gdl::utils::toString(f) << "\n";
 }
 
 void Game::update(float timestep) {

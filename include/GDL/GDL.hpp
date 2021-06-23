@@ -1,5 +1,6 @@
 #ifndef GDL_HPP
 #define GDL_HPP
+#include <GDL/Utils.hpp>
 #include <GDL/Scene.hpp>
 #include <GDL/Entity.hpp>
 #include <GDL/Component.hpp>
