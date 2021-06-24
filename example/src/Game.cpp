@@ -51,6 +51,7 @@ void Game::init() {
     rectangle->setActive(false);
     // std::cout << gdl::utils::toString(circle->getComponent<gdl::CircleShapeRenderer>()->getCenter()) << "\n";
     // std::cout << gdl::utils::toString(circle->getComponent<gdl::Collider>()->getBound()) << "\n";
+    player->getComponent<gdl::Collider>()->findLongestDistancePoints(*circle->getComponent<gdl::Collider>());
 }
 
 void Game::update(float timestep) {

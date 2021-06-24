@@ -4,6 +4,7 @@
 #include <GDL/Component.hpp>
 #include <vector>
 namespace gdl {
+    float distance(sf::Vector2f v1, sf::Vector2f v2);
     class Collider : public Component
     {
     private:
@@ -14,6 +15,7 @@ namespace gdl {
     public:
         void setSize(const sf::Vector2f& size);
         const sf::FloatRect& getBound() const;
+        void findLongestDistancePoints(const Collider& other);
         virtual void init() override;
         virtual void update(const float timestep);
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;

@@ -1,8 +1,10 @@
 #include <GDL/Collider.hpp>
 #include <GDL/Entity.hpp>
 #include <GDL/Utils.hpp>
+#include <math.h>
 
 namespace gdl {
+
     void Collider::init() {
         // this->rect.left = this->getOwner()->getPosition().x;
         // this->rect.top = this->getOwner()->getPosition().y;
@@ -38,19 +40,45 @@ namespace gdl {
         vertexArr[4].color = sf::Color::Green;
         this->vertexArray = vertexArr;
         gdl::utils::print("Owner : " + gdl::utils::toString(getOwner()->getPosition()));
-        edgeCoordinates.push_back({ sf::Vector2f({0, 0}) });
-        edgeCoordinates.push_back({ sf::Vector2f({0, size.y}) });
-        edgeCoordinates.push_back({ sf::Vector2f({size.x, size.y}) });
-        edgeCoordinates.push_back({ sf::Vector2f({size.x, 0}) });
+        edgeCoordinates.push_back({ getOwner()->getPosition() - getOwner()->getOrigin() + sf::Vector2f({0, 0}) });
+        edgeCoordinates.push_back({ getOwner()->getPosition() - getOwner()->getOrigin() + sf::Vector2f({0, size.y}) });
+        edgeCoordinates.push_back({ getOwner()->getPosition() - getOwner()->getOrigin() + sf::Vector2f({size.x, size.y}) });
+        edgeCoordinates.push_back({ getOwner()->getPosition() - getOwner()->getOrigin() + sf::Vector2f({size.x, 0}) });
 
         for (const sf::Vector2f& i : edgeCoordinates) {
             sf::CircleShape c1(10);
             c1.setOrigin({ sf::Vector2f(5, 5) });
-            c1.setPosition(i - c1.getOrigin());
+            c1.setPosition(i - c1.getOrigin() - getOwner()->getPosition() + getOwner()->getOrigin());
             points.push_back(c1);
             gdl::utils::print(gdl::utils::toString(i));
         }
     }
+
+    void Collider::findLongestDistancePoints(const Collider& other) {
+        sf::Vector2f one;
+        sf::Vector2f two;
+        sf::Vector2f currMax;
+        float currMaxDistance = 0.0f;
+
+        for (sf::Vector2f i : edgeCoordinates) {
+            for (sf::Vector2f j : other.edgeCoordinates) {
+                float d = distance(i, j);
+                if (d > currMaxDistance) {
+                    currMaxDistance = d;
+                    one = i;
+                    two = j;
+                }
+
+            }
+        }
+
+        utils::print(utils::toString(one) + " -- " + utils::toString(two));
+    }
+
+    float distance(sf::Vector2f v1, sf::Vector2f v2) {
+        return std::sqrt(std::pow((v1.x - v2.x), 2) + std::pow((v1.y - v2.y), 2));
+    }
+
 
     const sf::FloatRect& Collider::getBound() const {
         return this->rect;
