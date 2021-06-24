@@ -22,6 +22,14 @@ namespace gdl {
             states.transform = this->getOwner()->getTransform();
             target.draw(s, states);
         }
+
+        sf::Transform t;
+        t.translate({ 20, 20 });
+        float rotation = getOwner()->getRotation();
+        t.rotate(rotation);
+        utils::print(std::to_string(getOwner()->getRotation()));
+        states.transform = t;
+        target.draw(axises, states);
     }
 
     void Collider::setSize(const sf::Vector2f& size) {
@@ -52,6 +60,8 @@ namespace gdl {
             points.push_back(c1);
             gdl::utils::print(gdl::utils::toString(i));
         }
+
+        calculateAxis();
     }
 
     void Collider::findLongestDistancePoints(const Collider& other) {
@@ -79,6 +89,19 @@ namespace gdl {
         return std::sqrt(std::pow((v1.x - v2.x), 2) + std::pow((v1.y - v2.y), 2));
     }
 
+    void Collider::calculateAxis() {
+        sf::VertexArray vertexArr(sf::Lines, 4);
+        sf::Vertex originX = sf::Vertex({ 0, 0 });
+        sf::Vertex xAxis = sf::Vertex({ 768, 0 }, sf::Color::Blue);
+        sf::Vertex originY = sf::Vertex({ 0, 0 });
+        sf::Vertex yAxis = sf::Vertex({ 0, 1024 }, sf::Color::Red);
+        vertexArr[0] = originX;
+        vertexArr[1] = (xAxis);
+        vertexArr[2] = originY;
+        vertexArr[3] = (yAxis);
+        axises = vertexArr;
+
+    }
 
     const sf::FloatRect& Collider::getBound() const {
         return this->rect;

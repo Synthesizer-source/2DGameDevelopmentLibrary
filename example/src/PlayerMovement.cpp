@@ -46,7 +46,7 @@ void PlayerMovement::update(const float timestep) {
     //     velocity *= maxSpeed / actualspeed;
     // }
 
-    // this->rotate();
+    this->rotate();
 }
 
 void PlayerMovement::draw(sf::RenderTarget& target, sf::RenderStates states) const {
