@@ -7,39 +7,46 @@ const float PI = 3.14159265;
 void PlayerMovement::init() {}
 
 void PlayerMovement::update(const float timestep) {
-
+    maxSpeed = 1;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
     {
-        velocity.x -= (acceleration*timestep);
+        this->getOwner()->setPosition(this->getOwner()->getPosition() + sf::Vector2f(-maxSpeed, 0));
+        // velocity.x -= (acceleration * timestep);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
     {
-        velocity.x += (acceleration*timestep);
+        this->getOwner()->setPosition(this->getOwner()->getPosition() + sf::Vector2f(maxSpeed, 0));
+
+        // velocity.x += (acceleration * timestep);
     }
-   
+
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
     {
-        velocity.y -= (acceleration*timestep);
+        this->getOwner()->setPosition(this->getOwner()->getPosition() + sf::Vector2f(0, -maxSpeed));
+
+        // velocity.y -= (acceleration * timestep);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
     {
-        velocity.y += (acceleration*timestep);
+        this->getOwner()->setPosition(this->getOwner()->getPosition() + sf::Vector2f(0, maxSpeed));
+
+        // velocity.y += (acceleration * timestep);
     }
 
-    if (velocity.y > maxSpeed) velocity.y = maxSpeed;
-    if (velocity.y < -maxSpeed) velocity.y = -maxSpeed;
-    if (velocity.x < -maxSpeed) velocity.x = -maxSpeed;
-    if (velocity.x > maxSpeed) velocity.x = maxSpeed;
+    // if (velocity.y > maxSpeed) velocity.y = maxSpeed;
+    // if (velocity.y < -maxSpeed) velocity.y = -maxSpeed;
+    // if (velocity.x < -maxSpeed) velocity.x = -maxSpeed;
+    // if (velocity.x > maxSpeed) velocity.x = maxSpeed;
 
-    this->getOwner()->setPosition(this->getOwner()->getPosition() + velocity);
-    float actualspeed = sqrt((velocity.x * velocity.x) + (velocity.y * velocity.y));
+    // this->getOwner()->setPosition(this->getOwner()->getPosition() + velocity);
+    // float actualspeed = sqrt((velocity.x * velocity.x) + (velocity.y * velocity.y));
 
-    if (actualspeed > maxSpeed)
-    {
-        velocity *= maxSpeed / actualspeed;
-    }
+    // if (actualspeed > maxSpeed)
+    // {
+    //     velocity *= maxSpeed / actualspeed;
+    // }
 
-    this->rotate();
+    // this->rotate();
 }
 
 void PlayerMovement::draw(sf::RenderTarget& target, sf::RenderStates states) const {

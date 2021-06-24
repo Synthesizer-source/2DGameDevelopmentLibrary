@@ -1,4 +1,5 @@
 #include <GDL/Utils.hpp>
+#include <iostream>
 #include <sstream>
 
 namespace gdl::utils {
@@ -34,5 +35,14 @@ namespace gdl::utils {
             + ", Height : " + to_string_with_precision(r.height)
             + ", Top : " + to_string_with_precision(r.top)
             + ", Left : " + to_string_with_precision(r.left) + " }";
+    }
+
+    /**
+     * @brief print string
+     * 
+     * @param str 
+     */
+    void print(const std::string& str) {
+        std::cout << str << "\n";
     }
 }

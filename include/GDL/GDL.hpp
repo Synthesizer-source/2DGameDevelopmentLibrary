@@ -9,4 +9,5 @@
 #include <GDL/ShapeRenderer.hpp>
 #include <GDL/RectangleShapeRenderer.hpp>
 #include <GDL/CircleShapeRenderer.hpp>
+#include <GDL/Collider.hpp>
 #endif // !GDL_HPP

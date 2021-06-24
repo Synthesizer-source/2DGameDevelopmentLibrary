@@ -21,31 +21,36 @@ void Game::init() {
 
     player->addComponent<gdl::SpriteRenderer>();
     player->addComponent<PlayerMovement>();
+    player->addComponent<gdl::Collider>();
     enemy->addComponent<gdl::SpriteRenderer>();
     circle->addComponent<gdl::CircleShapeRenderer>();
+    circle->addComponent<gdl::Collider>();
     rectangle->addComponent<gdl::RectangleShapeRenderer>();
 
     scene->init();
-
     /* SpriteRenderer.cpp -> GDL -> src -> example -> resources -> spaceship.png */
     player->getComponent<gdl::SpriteRenderer>()->loadTexture("../../example/resources/spaceship.png");
     player->setOrigin(player->getComponent<gdl::SpriteRenderer>()->getCenter());
     player->setPosition({ 100, 100 });
+    player->getComponent<gdl::Collider>()->setSize(player->getComponent<gdl::SpriteRenderer>()->getSize());
 
     enemy->getComponent<gdl::SpriteRenderer>()->loadTexture("../../example/resources/enemy.png");
     enemy->setOrigin(enemy->getComponent<gdl::SpriteRenderer>()->getCenter());
     enemy->setPosition({ 400, 400 });
+    enemy->setActive(false);
 
     circle->getComponent<gdl::CircleShapeRenderer>()->setRadius(20.0f);
     circle->getComponent<gdl::CircleShapeRenderer>()->setColor(sf::Color::Cyan);
-    circle->setPosition({ 120,120 });
+    circle->setOrigin(circle->getComponent<gdl::CircleShapeRenderer>()->getCenter());
+    circle->setPosition({ 200, 200 });
+    circle->getComponent<gdl::Collider>()->setSize({ 40, 40 });
 
-    rectangle->getComponent<gdl::RectangleShapeRenderer>()->setSize({ 100,100 });
+    rectangle->getComponent<gdl::RectangleShapeRenderer>()->setSize({ 100, 100 });
     rectangle->getComponent<gdl::RectangleShapeRenderer>()->setColor(sf::Color::Yellow);
-    rectangle->setPosition({ 240,420 });
-    std::cout << gdl::utils::toString(rectangle->getComponent<gdl::RectangleShapeRenderer>()->getCenter()) << "\n";
-    sf::FloatRect f(10, 10, 10, 10);
-    std::cout << gdl::utils::toString(f) << "\n";
+    rectangle->setPosition({ 240, 420 });
+    rectangle->setActive(false);
+    // std::cout << gdl::utils::toString(circle->getComponent<gdl::CircleShapeRenderer>()->getCenter()) << "\n";
+    // std::cout << gdl::utils::toString(circle->getComponent<gdl::Collider>()->getBound()) << "\n";
 }
 
 void Game::update(float timestep) {
