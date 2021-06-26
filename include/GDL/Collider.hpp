@@ -10,6 +10,7 @@ namespace gdl {
     private:
         sf::CircleShape startPoint;
         sf::CircleShape endPoint;
+        sf::CircleShape projectionPoint;
         sf::VertexArray axises;
         std::vector<sf::CircleShape> points;
         sf::VertexArray vertexArray;
