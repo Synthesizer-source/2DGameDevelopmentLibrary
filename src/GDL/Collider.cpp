@@ -3,33 +3,35 @@
 #include <GDL/Utils.hpp>
 #include <math.h>
 
+#define PI 3.14159265
+
 namespace gdl {
 
     void Collider::init() {
-        // this->rect.left = this->getOwner()->getPosition().x;
-        // this->rect.top = this->getOwner()->getPosition().y;
+        startPoint.setRadius(10);
+        startPoint.setOrigin({ sf::Vector2f(5, 5) });
+        endPoint.setRadius(10);
+        endPoint.setOrigin({ sf::Vector2f(5, 5) });
     }
+
     void Collider::update(const float timestep) {
-        // this->rect.left = (this->getOwner()->getPosition() - this->getOwner()->getOrigin()).x;
-        // this->rect.top = (this->getOwner()->getPosition() - this->getOwner()->getOrigin()).y;
-        // gdl::utils::print(gdl::utils::toString(getOwner()->getTransform().transformPoint(100, 100)));
+        this->calculatePointWhichIntersectsAxis();
     }
+
     void Collider::draw(sf::RenderTarget& target, sf::RenderStates states) const {
         states.transform = this->getOwner()->getTransform();
         target.draw(this->vertexArray, states);
 
-        for (sf::CircleShape s : points) {
-            states.transform = this->getOwner()->getTransform();
-            target.draw(s, states);
-        }
-
-        sf::Transform t;
-        t.translate({ 20, 20 });
+        sf::Transform transformAxises;
         float rotation = getOwner()->getRotation();
-        t.rotate(rotation);
-        utils::print(std::to_string(getOwner()->getRotation()));
-        states.transform = t;
+        transformAxises.rotate(rotation);
+        states.transform = transformAxises;
         target.draw(axises, states);
+
+        sf::Transform transformBase; // 0,0 base point, top-left corner
+        states.transform = transformBase;
+        target.draw(startPoint, states);
+        target.draw(endPoint, states);
     }
 
     void Collider::setSize(const sf::Vector2f& size) {
@@ -47,7 +49,6 @@ namespace gdl {
         vertexArr[4].position = sf::Vector2f({ 0, 0 });
         vertexArr[4].color = sf::Color::Green;
         this->vertexArray = vertexArr;
-        gdl::utils::print("Owner : " + gdl::utils::toString(getOwner()->getPosition()));
         edgeCoordinates.push_back({ getOwner()->getPosition() - getOwner()->getOrigin() + sf::Vector2f({0, 0}) });
         edgeCoordinates.push_back({ getOwner()->getPosition() - getOwner()->getOrigin() + sf::Vector2f({0, size.y}) });
         edgeCoordinates.push_back({ getOwner()->getPosition() - getOwner()->getOrigin() + sf::Vector2f({size.x, size.y}) });
@@ -92,15 +93,29 @@ namespace gdl {
     void Collider::calculateAxis() {
         sf::VertexArray vertexArr(sf::Lines, 4);
         sf::Vertex originX = sf::Vertex({ 0, 0 });
-        sf::Vertex xAxis = sf::Vertex({ 768, 0 }, sf::Color::Blue);
+        sf::Vertex xAxis = sf::Vertex({ 3000, 0 }, sf::Color::Blue);
         sf::Vertex originY = sf::Vertex({ 0, 0 });
-        sf::Vertex yAxis = sf::Vertex({ 0, 1024 }, sf::Color::Red);
+        sf::Vertex yAxis = sf::Vertex({ 0, 3000 }, sf::Color::Red);
         vertexArr[0] = originX;
         vertexArr[1] = (xAxis);
         vertexArr[2] = originY;
         vertexArr[3] = (yAxis);
         axises = vertexArr;
 
+    }
+
+    void Collider::calculatePointWhichIntersectsAxis() {
+
+        sf::Vector2f ownerPos = getOwner()->getPosition();
+        float rotation = getOwner()->getRotation();
+        float tan = std::tan(rotation * PI / 180.0f);
+        float cot = 1 / tan;
+        float startPointY = tan * ownerPos.x;
+        float endPointX = cot * ownerPos.y;
+        startPoint.setPosition({ ownerPos.x, startPointY });
+        startPoint.setPosition(startPoint.getPosition() - startPoint.getOrigin());
+        endPoint.setPosition({ endPointX, ownerPos.y });
+        endPoint.setPosition(endPoint.getPosition() - endPoint.getOrigin());
     }
 
     const sf::FloatRect& Collider::getBound() const {

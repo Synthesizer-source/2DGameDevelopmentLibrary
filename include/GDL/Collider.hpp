@@ -8,6 +8,8 @@ namespace gdl {
     class Collider : public Component
     {
     private:
+        sf::CircleShape startPoint;
+        sf::CircleShape endPoint;
         sf::VertexArray axises;
         std::vector<sf::CircleShape> points;
         sf::VertexArray vertexArray;
@@ -18,6 +20,7 @@ namespace gdl {
         const sf::FloatRect& getBound() const;
         void findLongestDistancePoints(const Collider& other);
         void calculateAxis();
+        void calculatePointWhichIntersectsAxis();
         virtual void init() override;
         virtual void update(const float timestep);
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
