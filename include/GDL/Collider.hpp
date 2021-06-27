@@ -8,9 +8,12 @@ namespace gdl {
     class Collider : public Component
     {
     private:
-        sf::CircleShape startPoint;
-        sf::CircleShape endPoint;
-        sf::CircleShape projectionPoint;
+        sf::CircleShape startPointX;
+        sf::CircleShape endPointX;
+        sf::CircleShape startPointY;
+        sf::CircleShape endPointY;
+        sf::CircleShape projectionPointX;
+        sf::CircleShape projectionPointY;
         sf::VertexArray axises;
         std::vector<sf::CircleShape> points;
         sf::VertexArray vertexArray;

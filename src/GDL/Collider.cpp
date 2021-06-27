@@ -8,15 +8,24 @@
 namespace gdl {
 
     void Collider::init() {
-        startPoint.setRadius(10);
-        startPoint.setOrigin({ sf::Vector2f(5, 5) });
-        startPoint.setFillColor(sf::Color::Green);
-        endPoint.setRadius(10);
-        endPoint.setOrigin({ sf::Vector2f(5, 5) });
-        endPoint.setFillColor(sf::Color::Blue);
-        projectionPoint.setRadius(10);
-        projectionPoint.setOrigin({ sf::Vector2f(5, 5) });
-        projectionPoint.setFillColor(sf::Color::Red);
+        startPointX.setRadius(10);
+        startPointX.setOrigin({ sf::Vector2f(10, 10) });
+        startPointX.setFillColor(sf::Color::Green);
+        endPointX.setRadius(10);
+        endPointX.setOrigin({ sf::Vector2f(10, 10) });
+        endPointX.setFillColor(sf::Color::Blue);
+        startPointY.setRadius(10);
+        startPointY.setOrigin({ sf::Vector2f(10, 10) });
+        startPointY.setFillColor(sf::Color::Green);
+        endPointY.setRadius(10);
+        endPointY.setOrigin({ sf::Vector2f(10, 10) });
+        endPointY.setFillColor(sf::Color::Blue);
+        projectionPointX.setRadius(10);
+        projectionPointX.setOrigin({ sf::Vector2f(10, 10) });
+        projectionPointX.setFillColor(sf::Color::Red);
+        projectionPointY.setRadius(10);
+        projectionPointY.setOrigin({ sf::Vector2f(10, 10) });
+        projectionPointY.setFillColor(sf::Color::Red);
     }
 
     void Collider::update(const float timestep) {
@@ -35,9 +44,12 @@ namespace gdl {
 
         sf::Transform transformBase; // 0,0 base point, top-left corner
         states.transform = transformBase;
-        target.draw(startPoint, states);
-        target.draw(endPoint, states);
-        target.draw(projectionPoint, states);
+        target.draw(startPointX, states);
+        target.draw(endPointX, states);
+        target.draw(projectionPointX, states);
+        target.draw(startPointY, states);
+        target.draw(endPointY, states);
+        target.draw(projectionPointY, states);
     }
 
     void Collider::setSize(const sf::Vector2f& size) {
@@ -97,15 +109,23 @@ namespace gdl {
     }
 
     void Collider::calculateAxis() {
-        sf::VertexArray vertexArr(sf::Lines, 4);
+        sf::VertexArray vertexArr(sf::Lines, 8);
         sf::Vertex originX = sf::Vertex({ 0, 0 });
         sf::Vertex xAxis = sf::Vertex({ 3000, 0 }, sf::Color::Blue);
         sf::Vertex originY = sf::Vertex({ 0, 0 });
         sf::Vertex yAxis = sf::Vertex({ 0, 3000 }, sf::Color::Red);
+        sf::Vertex originNegativeX = sf::Vertex({ 0, 0 });
+        sf::Vertex negativeXAxis = sf::Vertex({ -3000, 0 }, sf::Color::Blue);
+        sf::Vertex originNegativeY = sf::Vertex({ 0, 0 });
+        sf::Vertex negativeYAxis = sf::Vertex({ 0, -3000 }, sf::Color::Red);
         vertexArr[0] = originX;
         vertexArr[1] = (xAxis);
         vertexArr[2] = originY;
         vertexArr[3] = (yAxis);
+        vertexArr[4] = originNegativeX;
+        vertexArr[5] = negativeXAxis;
+        vertexArr[6] = originNegativeY;
+        vertexArr[7] = negativeYAxis;
         axises = vertexArr;
 
     }
@@ -118,15 +138,20 @@ namespace gdl {
         float cos = std::cos(rotation * PI / 180.0f);
         float tan = std::tan(rotation * PI / 180.0f);
         float cot = 1 / tan;
-        float startPointY = tan * ownerPos.x;
-        float endPointX = cot * ownerPos.y;
-        startPoint.setPosition({ ownerPos.x, startPointY });
-        startPoint.setPosition(startPoint.getPosition() - startPoint.getOrigin());
-        endPoint.setPosition({ endPointX, ownerPos.y });
-        endPoint.setPosition(endPoint.getPosition() - endPoint.getOrigin());
-        float distanceProjection = cos * (ownerPos.y - startPointY);
-        projectionPoint.setPosition({ ownerPos.x + (distanceProjection * sin), ownerPos.y - (distanceProjection * cos) });
-        projectionPoint.setPosition(projectionPoint.getPosition() - projectionPoint.getOrigin());
+        float startX = tan * ownerPos.x;
+        float endX = cot * ownerPos.y;
+        startPointX.setPosition({ ownerPos.x, startX });
+        endPointX.setPosition({ endX, ownerPos.y });
+        float distanceProjectionX = cos * (ownerPos.y - startX);
+        projectionPointX.setPosition({ ownerPos.x + (distanceProjectionX * sin), ownerPos.y - (distanceProjectionX * cos) });
+
+        float startY = -1 * tan * ownerPos.y;
+        float endY = -1 * cot * ownerPos.x;
+        startPointY.setPosition({ startY, ownerPos.y });
+        endPointY.setPosition({ ownerPos.x, endY });
+        float distanceProjectionY = cos * (ownerPos.x - startY);
+        projectionPointY.setPosition({ ownerPos.x - (distanceProjectionY * cos), ownerPos.y - (distanceProjectionY * sin) });
+        utils::print(utils::toString(projectionPointY.getPosition()));
     }
 
     const sf::FloatRect& Collider::getBound() const {
