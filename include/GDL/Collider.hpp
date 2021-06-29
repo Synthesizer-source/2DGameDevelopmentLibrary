@@ -4,7 +4,6 @@
 #include <GDL/Component.hpp>
 #include <vector>
 namespace gdl {
-    float distance(sf::Vector2f v1, sf::Vector2f v2);
     class Collider : public Component
     {
     private:
@@ -14,23 +13,13 @@ namespace gdl {
         sf::Vector2f maxX;
         sf::Vector2f maxY;
         sf::Vector2f size;
-        sf::CircleShape startPointX;
-        sf::CircleShape endPointX;
-        sf::CircleShape startPointY;
-        sf::CircleShape endPointY;
-        sf::CircleShape projectionPointX;
-        sf::CircleShape projectionPointY;
         sf::VertexArray axises;
-        std::vector<sf::CircleShape> points;
         sf::VertexArray vertexArray;
         std::vector<sf::Vector2f> edgeCoordinates;
-        sf::FloatRect rect;
-    public:
-        std::vector<sf::Vector2f> intersection(sf::Vector2f point);
-        void setSize(const sf::Vector2f& size);
-        void findLongestDistancePoints(const Collider& other);
+        std::vector<sf::Vector2f> intersection(const sf::Vector2f& point);
         void calculateAxis();
-        void calculatePointWhichIntersectsAxis();
+    public:
+        void setSize(const sf::Vector2f& size);
         virtual void init() override;
         virtual void update(const float timestep);
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
