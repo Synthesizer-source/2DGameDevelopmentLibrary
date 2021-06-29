@@ -8,6 +8,12 @@ namespace gdl {
     class Collider : public Component
     {
     private:
+        std::vector<sf::Vector2f> xPos;
+        std::vector<sf::Vector2f> yPos;
+        sf::Vector2f base;
+        sf::Vector2f maxX;
+        sf::Vector2f maxY;
+        sf::Vector2f size;
         sf::CircleShape startPointX;
         sf::CircleShape endPointX;
         sf::CircleShape startPointY;
@@ -20,8 +26,8 @@ namespace gdl {
         std::vector<sf::Vector2f> edgeCoordinates;
         sf::FloatRect rect;
     public:
+        std::vector<sf::Vector2f> intersection(sf::Vector2f point);
         void setSize(const sf::Vector2f& size);
-        const sf::FloatRect& getBound() const;
         void findLongestDistancePoints(const Collider& other);
         void calculateAxis();
         void calculatePointWhichIntersectsAxis();

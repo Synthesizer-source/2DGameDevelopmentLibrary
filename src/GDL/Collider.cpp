@@ -29,7 +29,17 @@ namespace gdl {
     }
 
     void Collider::update(const float timestep) {
-        this->calculatePointWhichIntersectsAxis();
+        // this->calculatePointWhichIntersectsAxis();
+        sf::Vector2f ownerPos = getOwner()->getPosition();
+        float rotation = getOwner()->getRotation();
+        float sin = std::sin(rotation * PI / 180.0f);
+        float cos = std::cos(rotation * PI / 180.0f);
+        float tan = std::tan(rotation * PI / 180.0f);
+        float cot = 1 / tan;
+        maxX = getOwner()->getTransform().transformPoint(sf::Vector2f(size.x, 0));
+        maxY = getOwner()->getTransform().transformPoint(sf::Vector2f(0, size.y));
+        xPos = intersection(maxX);
+        yPos = intersection(maxY);
     }
 
     void Collider::draw(sf::RenderTarget& target, sf::RenderStates states) const {
@@ -44,17 +54,37 @@ namespace gdl {
 
         sf::Transform transformBase; // 0,0 base point, top-left corner
         states.transform = transformBase;
-        target.draw(startPointX, states);
-        target.draw(endPointX, states);
-        target.draw(projectionPointX, states);
-        target.draw(startPointY, states);
-        target.draw(endPointY, states);
-        target.draw(projectionPointY, states);
+
+        for (int i = 0; i < xPos.size(); i++)
+        {
+            sf::CircleShape c;
+            c.setRadius(10);
+            c.setOrigin({ sf::Vector2f(10, 10) });
+            if (i % 3 == 0) c.setFillColor(sf::Color::Green);
+            else if (i % 3 == 1) c.setFillColor(sf::Color::Blue);
+            else c.setFillColor(sf::Color::Red);
+            c.setPosition(xPos[i]);
+            target.draw(c, states);
+        }
+
+        for (int i = 0; i < yPos.size(); i++)
+        {
+            sf::CircleShape c;
+            c.setRadius(10);
+            c.setOrigin({ sf::Vector2f(10, 10) });
+            if (i % 3 == 0) c.setFillColor(sf::Color::Green);
+            else if (i % 3 == 1) c.setFillColor(sf::Color::Blue);
+            else c.setFillColor(sf::Color::Red);
+            c.setPosition(yPos[i]);
+            target.draw(c, states);
+        }
+
     }
 
     void Collider::setSize(const sf::Vector2f& size) {
         this->rect.width = size.x;
         this->rect.height = size.y;
+        this->size = size;
         sf::VertexArray vertexArr(sf::LinesStrip, 5);
         vertexArr[0].position = sf::Vector2f({ 0, 0 });
         vertexArr[0].color = sf::Color::Green;
@@ -73,11 +103,11 @@ namespace gdl {
         edgeCoordinates.push_back({ getOwner()->getPosition() - getOwner()->getOrigin() + sf::Vector2f({size.x, 0}) });
 
         for (const sf::Vector2f& i : edgeCoordinates) {
+            utils::print(utils::toString(i));
             sf::CircleShape c1(10);
-            c1.setOrigin({ sf::Vector2f(5, 5) });
-            c1.setPosition(i - c1.getOrigin() - getOwner()->getPosition() + getOwner()->getOrigin());
+            c1.setOrigin({ sf::Vector2f(10, 10) });
+            c1.setPosition(i - getOwner()->getPosition() + getOwner()->getOrigin());
             points.push_back(c1);
-            gdl::utils::print(gdl::utils::toString(i));
         }
 
         calculateAxis();
@@ -100,8 +130,6 @@ namespace gdl {
 
             }
         }
-
-        utils::print(utils::toString(one) + " -- " + utils::toString(two));
     }
 
     float distance(sf::Vector2f v1, sf::Vector2f v2) {
@@ -130,6 +158,35 @@ namespace gdl {
 
     }
 
+    std::vector<sf::Vector2f> Collider::intersection(sf::Vector2f point) {
+        std::vector<sf::Vector2f> res;
+        float rotation = getOwner()->getRotation();
+        float sin = std::sin(rotation * PI / 180.0f);
+        float cos = std::cos(rotation * PI / 180.0f);
+        float tan = std::tan(rotation * PI / 180.0f);
+        float cot = 1 / tan;
+        float startX = tan * point.x;
+        float endX = cot * point.y;
+        // startPointX.setPosition({ point.x, startX });
+        // endPointX.setPosition({ endX, point.y });
+        float distanceProjectionX = cos * (point.y - startX);
+        // projectionPointX.setPosition({ point.x + (distanceProjectionX * sin), point.y - (distanceProjectionX * cos) });
+        res.push_back({ point.x, startX });
+        res.push_back({ endX, point.y });
+        res.push_back({ point.x + (distanceProjectionX * sin), point.y - (distanceProjectionX * cos) });
+        float startY = -1 * tan * point.y;
+        float endY = -1 * cot * point.x;
+        // startPointY.setPosition({ startY, point.y });
+        // endPointY.setPosition({ point.x, endY });
+        float distanceProjectionY = cos * (point.x - startY);
+        // projectionPointY.setPosition({ point.x - (distanceProjectionY * cos), point.y - (distanceProjectionY * sin) });
+
+        res.push_back({ startY, point.y });
+        res.push_back({ point.x, endY });
+        res.push_back({ point.x - (distanceProjectionY * cos), point.y - (distanceProjectionY * sin) });
+        return res;
+    }
+
     void Collider::calculatePointWhichIntersectsAxis() {
 
         sf::Vector2f ownerPos = getOwner()->getPosition();
@@ -151,10 +208,5 @@ namespace gdl {
         endPointY.setPosition({ ownerPos.x, endY });
         float distanceProjectionY = cos * (ownerPos.x - startY);
         projectionPointY.setPosition({ ownerPos.x - (distanceProjectionY * cos), ownerPos.y - (distanceProjectionY * sin) });
-        utils::print(utils::toString(projectionPointY.getPosition()));
-    }
-
-    const sf::FloatRect& Collider::getBound() const {
-        return this->rect;
     }
 }
